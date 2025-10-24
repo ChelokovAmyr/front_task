@@ -1,36 +1,28 @@
 <template>
-  <div class="max-w-lg mx-auto py-20">
-    <div class="flex items-center gap-2">
-      <div class="bg-gray-300 rounded-full w-14 h-14"></div>
-      <div>
-        <label for="hours-old">{{ student.name }} is</label>
-        <div class="flex gap-2">
-          <input
-            v-model="student.age"
-            name="hours-old"
-            id="hours-old"
-            class="border-b-gray-300 border-b w-[50px]"
-            type="number"
+  <div class="min-h-screen bg-white py-20">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-col items-start">
+        <template v-for="(age, index) in ages" :key="index">
+          <AgeCard
+            v-model="ages[index]"
+            :is-focused="isFocused(index)"
+            @focus="setFocus(index)"
+            @blur="clearFocus"
           />
-          <div class="text">hours old</div>
-        </div>
+          <ArrowDivider v-if="index < ages.length - 1" />
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
+import { AgeCard, ArrowDivider } from '@/components'
+import { useFocus } from '@/composables/useFocus'
+import '@/styles/app.css'
 
-const student = reactive<{
-  name: string
-  age: number | null
-  image: string | null
-}>({
-  name: 'Hugh',
-  age: null,
-  image: null,
-})
+const ages = ref(['7', '100', '1000000'])
+
+const { setFocus, clearFocus, isFocused } = useFocus()
 </script>
-
-<style></style>
